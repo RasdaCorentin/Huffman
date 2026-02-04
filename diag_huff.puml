@@ -53,24 +53,4 @@ Huffman ..> TableCodage : utilise >
 Huffman ..> Donnees : transforme >
 ArbreHuffman ..> TableCodage : produit >
 
-@enduml@startuml
-skinparam classAttributeIconSize 0
-
-class Fichier{}
-Fichier "1" *-- "1..*" Ligne
-class Ligne{}
-Ligne "1" *-- "1..*" Symbole
-abstract class Symbole{}
-Symbole <|-- Texte  
-Symbole <|-- Binaire : {incomplet exclu Binaire} 
-class Texte{}
-class Binaire{}
-
-class Huffman{}
-class HuffmanTable{}
-Huffman "1" *-- "1"HuffmanTable
-
-Huffman .-- Texte : utilise
-Huffman .-- Binaire : traduit
-
 @enduml
