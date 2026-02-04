@@ -1,0 +1,76 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+' --- Structure de l'Arbre ---
+class Noeud {
+  + symbole : char
+  + frequence : int
+  + gauche : Noeud
+  + droit : Noeud
+  + parent : Noeud
+  --
+  + estFeuille() : bool
+}
+
+class ArbreHuffman {
+  - racine : Noeud
+  --
+  + construire(frequences : List)
+  + genererTable() : TableCodage
+}
+
+' --- Logique de Traitement ---
+class Huffman {
+  --
+  + compresser(message : MessageTexte) : FluxBinaire
+  + decompresser(flux : FluxBinaire, arbre : ArbreHuffman) : MessageTexte
+  - calculerFrequences(texte : chaîne) : List
+}
+
+class TableCodage {
+  - codes : List<caractère, List<bit>>
+  + obtenirCode(s : caractère) : codes.bits
+}
+
+' --- Modèle de Données ---
+abstract class Donnees {
+  + contenu : chaîne
+}
+
+class MessageTexte extends Donnees {
+  + nbCaracteres : entier
+}
+
+class FluxBinaire extends Donnees {
+  + nbBits : entier
+}
+
+' --- Relations ---
+ArbreHuffman "1" *-- "1" Noeud : possède racine >
+Noeud "1" o-- "0..2" Noeud : enfants >
+Huffman ..> ArbreHuffman : utilise >
+Huffman ..> TableCodage : utilise >
+Huffman ..> Donnees : transforme >
+ArbreHuffman ..> TableCodage : produit >
+
+@enduml@startuml
+skinparam classAttributeIconSize 0
+
+class Fichier{}
+Fichier "1" *-- "1..*" Ligne
+class Ligne{}
+Ligne "1" *-- "1..*" Symbole
+abstract class Symbole{}
+Symbole <|-- Texte  
+Symbole <|-- Binaire : {incomplet exclu Binaire} 
+class Texte{}
+class Binaire{}
+
+class Huffman{}
+class HuffmanTable{}
+Huffman "1" *-- "1"HuffmanTable
+
+Huffman .-- Texte : utilise
+Huffman .-- Binaire : traduit
+
+@enduml
